@@ -192,6 +192,18 @@ This renders the `index.html` file that will be used to interact with the backen
 - `400` if `author` is not given
 - `404` if `author` is not a recognized username of any user
 
+#### `GET /api/freets?circle=NAME` (Added) - Get freets by circle
+
+**Returns**
+
+- An array of freets for the circle with name `circle`
+
+**Throws**
+
+- `403` if the user is not logged in
+- `400` if `circle` is not given
+- `404` if `circle` is not a recognized circle of the logged in user
+
 #### `POST /api/freets` - Create a new freet
 
 **Body**
@@ -313,3 +325,229 @@ This renders the `index.html` file that will be used to interact with the backen
 **Throws**
 
 - `403` if the user is not logged in
+
+#### `GET /api/followers` (Added) - Get the logged in user's list of following and followed users
+
+**Returns**
+
+- A success message
+- An object containing the user's following and followed users
+
+**Throws**
+
+- `403` if the user is not logged in
+
+#### `GET /api/followers/:username?` (Added) - Get any user's list of following and followed users
+
+**Returns**
+
+- A success message
+- An object containing the user's following and followed users
+
+**Throws**
+
+- `400` if no username is provided
+- `404` if no account exists with the specified username
+
+#### `PUT /api/followers` (Added) - Update the logged in user's list of following users with a new one
+
+**Body**
+
+- `other_username` _{string}_ - The username of a user to follow
+
+**Returns**
+
+- A success message
+- An object containing the user's following (including the newly following one) and followed users
+
+**Throws**
+
+- `400` if no username is provided
+- `403` if the user is not logged in
+- `404` if no account exists with the specified username to follow
+- `405` if the username of the user to follow is the same as the user's own username (cannot follow oneself)
+- `409` if the user to be followed is already being followed
+
+#### `DELETE /api/followers` (Added) - Delete a user from the logged in user's list of following users
+
+**Body**
+
+- `other_username` _{string}_ - The username of a user to unfollow
+
+**Returns**
+
+- A success message
+- An object containing the user's following (included the unfollowed user) and followed users
+
+**Throws**
+
+- `400` if no username is provided
+- `403` if the user is not logged in
+- `404` if no account exists with the specified username to unfollow
+- `405` if the username of the user to follow is the same as the user's own username (cannot unfollow oneself)
+- `409` if the user to be followed is already not followed
+
+#### `POST /api/studio` (Added) - Create a studio component for a freet
+
+**Body**
+
+- `content` _{string}_ - The content of the studio created freet
+
+**Returns**
+
+- A success message
+- A object with the created freet
+
+**Throws**
+
+- `403` if the user is not logged in
+- `400` If the freet content is empty or a stream of empty spaces
+
+#### `PUT /api/studio/:studioId?`(Added) - Update existing studio component for an existing freet
+
+**Body**
+
+- `content` _{string}_ - The content of the studio component
+
+**Returns**
+
+- A success message
+- A object with the updated freet
+
+**Throws**
+
+- `403` if the user is not logged in
+- `404` if the freetId is invalid
+- `403` if the user is not the author of the freet
+- `400` If the freet content is empty or a stream of empty spaces
+
+#### `DELETE /api/studio/:studioId?`(Added) - Delete studio component from an existing freet
+
+**Returns**
+
+- A success message
+- A object with the updated freet
+
+**Throws**
+
+- `403` if the user is not logged in
+- `404` if the freetId is invalid
+- `403` if the user is not the author of the freet
+
+#### `GET /api/profile`(Added) - Get the logged in user's profile info
+
+**Returns**
+
+- A success message
+- A object with the logged in user's profile (bio, list of followers, number of followers, list of freets)
+
+**Throws**
+
+- `403` if the user is not logged in
+
+#### `GET /api/profile?username=USERNAME`(Added) - Get a requested user's profile info
+
+**Returns**
+
+- A success message
+- A object with the requested user's profile (bio, list of followers, number of followers, list of freets)
+
+**Throws**
+
+- `403` if the user is not logged in
+- `404` if no account exists with the requested username
+
+#### `PUT /api/profile/bio`(Added) - Update bio for the logged in user
+
+**Body**
+
+- `content` _{string}_ - The content of the user's bio
+
+**Returns**
+
+- A success message
+- A object with the updated bio
+
+**Throws**
+
+- `403` if the user is not logged in
+- `400` If the bio content is empty or a stream of empty spaces
+- `413` if the new freet content is more than 60 characters long
+
+#### `GET /api/circle` (Added) - Get a list of all circles for a user
+
+**Returns**
+
+- A success message
+- A object with all the circles
+
+**Throws**
+
+- `403` if the user is not logged in
+
+#### `Post /api/circle` (Added) - Create a new circle
+
+**Body**
+
+- `name` _{string}_ - The name for this circle
+- `users` _{Array<string>}_ - A list of usernames
+
+**Returns**
+
+- A success message
+- A object with the new circle info (name, list of users, list of freets)
+
+**Throws**
+
+- `403` if the user is not logged in
+- `409` if the circle name is already in use
+- `404` if one of the requested users does not exist
+
+#### `GET /api/circle/:circleId?` (Added) - Get info of an existing circle
+
+**Body**
+
+- `name` _{string}_ - The name for this circle
+
+**Returns**
+
+- A success message
+- A object with information for an existing circle (name, list of users, list of freets)
+
+**Throws**
+
+- `403` if the user is not logged in
+- `404` if the requested circle does not exist
+
+#### `PUT /api/circle/:circleId?` (Added) - Update an existing circle by adding a new user
+
+**Body**
+
+- `name` _{string}_ - The name for this circle
+- `username` _{string}_ - The username for a user to add
+
+**Returns**
+
+- A success message
+- A object with updated information for the requested circle (name, list of users, list of freets)
+
+**Throws**
+
+- `403` if the user is not logged in
+- `404` if the requested circle does not exist
+- `404` if the user to be added does not exist
+
+#### `DELETE /api/circle/:circleId?` (Added) - Delete (leave from) an existing circle
+
+**Body**
+
+- `name` _{string}_ - The name for the circle to leave
+
+**Returns**
+
+- A success message
+
+**Throws**
+
+- `403` if the user is not logged in
+- `404` if the requested circle does not exist
