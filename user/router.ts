@@ -72,6 +72,7 @@ router.delete(
  *
  * @param {string} username - username of user
  * @param {string} password - user's password
+ * @param {string} name - user's name
  * @return {UserResponse} - The created user
  * @throws {403} - If there is a user already logged in
  * @throws {409} - If username is already taken
@@ -84,10 +85,11 @@ router.post(
     userValidator.isUserLoggedOut,
     userValidator.isValidUsername,
     userValidator.isUsernameNotAlreadyInUse,
+    userValidator.isValidName,
     userValidator.isValidPassword
   ],
   async (req: Request, res: Response) => {
-    const user = await UserCollection.addOne(req.body.username, req.body.password);
+    const user = await UserCollection.addOne(req.body.username, req.body.name, req.body.password);
     console.log('userCollection addOne');
     const followers = await FollowersCollection.addOne(user);
     req.session.userId = user._id.toString();
@@ -105,6 +107,7 @@ router.post(
  * @name PUT /api/users
  *
  * @param {string} username - The user's new username
+ * @param {string} name - The user's new name
  * @param {string} password - The user's new password
  * @return {UserResponse} - The updated user
  * @throws {403} - If user is not logged in
@@ -116,6 +119,7 @@ router.put(
   [
     userValidator.isUserLoggedIn,
     userValidator.isValidUsername,
+    userValidator.isValidName,
     userValidator.isUsernameNotAlreadyInUse,
     userValidator.isValidPassword
   ],

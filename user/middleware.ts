@@ -43,6 +43,23 @@ const isValidUsername = (req: Request, res: Response, next: NextFunction) => {
 };
 
 /**
+ * Checks if a name in req.body is valid (not empty)
+ */
+const isValidName = (req: Request, res: Response, next: NextFunction) => {
+  const nameRegex = /^[\w\s]+$/i;
+  if (!nameRegex.test(req.body.name)) {
+    res.status(400).json({
+      error: {
+        name: 'Name must be a nonempty alphanumeric string (spaces allowed).'
+      }
+    });
+    return;
+  }
+
+  next();
+};
+
+/**
  * Checks if a password in req.body is valid, that is, at 6-50 characters long without any spaces
  */
 const isValidPassword = (req: Request, res: Response, next: NextFunction) => {
@@ -85,6 +102,11 @@ const isAccountExists = async (req: Request, res: Response, next: NextFunction) 
  * Checks if a username in req.body is already in use
  */
 const isUsernameNotAlreadyInUse = async (req: Request, res: Response, next: NextFunction) => {
+  if (req.body.username === undefined) {
+    next();
+    return;
+  }
+
   const user = await UserCollection.findOneByUsername(req.body.username);
 
   // If the current session user wants to change their username to one which matches
@@ -161,5 +183,6 @@ export {
   isAccountExists,
   isAuthorExists,
   isValidUsername,
-  isValidPassword
+  isValidPassword,
+  isValidName
 };

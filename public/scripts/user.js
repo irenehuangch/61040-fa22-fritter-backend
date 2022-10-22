@@ -15,6 +15,12 @@ function changeUsername(fields) {
     .catch(showResponse);
 }
 
+function changeName(fields) {
+  fetch('/api/users', {method: 'PUT', body: JSON.stringify(fields), headers: {'Content-Type': 'application/json'}})
+    .then(showResponse)
+    .catch(showResponse);
+}
+
 function changePassword(fields) {
   fetch('/api/users', {method: 'PUT', body: JSON.stringify(fields), headers: {'Content-Type': 'application/json'}})
     .then(showResponse)

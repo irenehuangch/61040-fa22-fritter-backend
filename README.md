@@ -479,7 +479,7 @@ This renders the `index.html` file that will be used to interact with the backen
 **Returns**
 
 - A success message
-- A object with all the circles
+- A object with all the circles for the logged in user
 
 **Throws**
 
@@ -490,58 +490,60 @@ This renders the `index.html` file that will be used to interact with the backen
 **Body**
 
 - `name` _{string}_ - The name for this circle
-- `users` _{Array<string>}_ - A list of usernames
 
 **Returns**
 
 - A success message
-- A object with the new circle info (name, list of users, list of freets)
+- A object with the new circle info (name and list of users starting with just the logged in user)
 
 **Throws**
 
 - `403` if the user is not logged in
-- `409` if the circle name is already in use
-- `404` if one of the requested users does not exist
+- `400` if a circle name is not given
+- `409` if a circle already exists under the given name
 
-#### `GET /api/circle/:circleId?` (Added) - Get info of an existing circle
+#### `GET /api/circle?name=circle_name` (Added) - Get info of an existing circle
 
 **Body**
 
-- `name` _{string}_ - The name for this circle
+- `circle_name` _{string}_ - The name for this circle
 
 **Returns**
 
 - A success message
-- A object with information for an existing circle (name, list of users, list of freets)
+- A object with information for an existing circle (including circle name and list of users)
 
 **Throws**
 
 - `403` if the user is not logged in
-- `404` if the requested circle does not exist
+- `400` if no circle name is given
+- `409` if the user is not in the specified circle
 
-#### `PUT /api/circle/:circleId?` (Added) - Update an existing circle by adding a new user
+#### `PUT /api/circle/:circle_name?` (Added) - Update an existing circle by adding a new user
 
 **Body**
 
-- `name` _{string}_ - The name for this circle
+- `circle_name` _{string}_ - The name for this circle
 - `username` _{string}_ - The username for a user to add
 
 **Returns**
 
 - A success message
-- A object with updated information for the requested circle (name, list of users, list of freets)
+- A object with updated information for the requested circle (including circle name and list of users)
 
 **Throws**
 
 - `403` if the user is not logged in
-- `404` if the requested circle does not exist
-- `404` if the user to be added does not exist
+- `400` if no circle name or username is given
+- `404` if the logged in user is not in the circle, or if no account exists under the provided username
+- `405` if the username to be added is not a follower
+- `409` if the user to be added is already in the circle
 
-#### `DELETE /api/circle/:circleId?` (Added) - Delete (leave from) an existing circle
+#### `DELETE /api/circle/:circle_name?` (Added) - Delete (leave from) an existing circle
 
 **Body**
 
-- `name` _{string}_ - The name for the circle to leave
+- `circle_name` _{string}_ - The name of the circle to leave from
 
 **Returns**
 
@@ -550,4 +552,5 @@ This renders the `index.html` file that will be used to interact with the backen
 **Throws**
 
 - `403` if the user is not logged in
-- `404` if the requested circle does not exist
+- `400` if no circle name is given
+- `404` if the circle does not exist for this user

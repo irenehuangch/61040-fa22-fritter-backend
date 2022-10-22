@@ -31,6 +31,7 @@ const formsAndHandlers = {
   'create-user': createUser,
   'delete-user': deleteUser,
   'change-username': changeUsername,
+  'change-name': changeName,
   'change-password': changePassword,
   'sign-in': signIn,
   'sign-out': signOut,
@@ -42,19 +43,29 @@ const formsAndHandlers = {
   'view-all-followers': viewAllFollowers,
   'view-all-followers-by-username': viewAllFollowersByUsername,
   'add-follower': addFollower,
-  'delete-follower': deleteFollower
+  'delete-follower': deleteFollower,
+  'view-all-circles': viewAllCircles,
+  'view-circle': viewCircle,
+  'create-circle': createCircle,
+  'delete-circle': deleteCircle,
+  'add-circle-user': addCircleUser
 };
 
 // Attach handlers to forms
 function init() {
   Object.entries(formsAndHandlers).forEach(([formID, handler]) => {
     const form = document.getElementById(formID);
-    form.onsubmit = e => {
-      e.preventDefault();
+    if (formID === 'create-circle-users') {
       const formData = new FormData(form);
-      handler(Object.fromEntries(formData.entries()));
-      return false; // Don't reload page
-    };
+      handler();
+    } else {
+      form.onsubmit = e => {
+        e.preventDefault();
+        const formData = new FormData(form);
+        handler(Object.fromEntries(formData.entries()));
+        return false; // Don't reload page
+      };
+    }
   });
 }
 

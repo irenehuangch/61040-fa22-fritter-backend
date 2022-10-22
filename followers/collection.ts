@@ -16,7 +16,7 @@ class FollowersCollection {
   /**
    * Add a new followers object
    *
-   * @param {User} user - The username of the user
+   * @param {User} user - The user to create an object for
    * @return {Promise<HydratedDocument<Followers>>} - The newly created user
    */
   static async addOne(user: User): Promise<HydratedDocument<Followers>> {
