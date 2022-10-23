@@ -1,6 +1,7 @@
 import type {Types, PopulatedDoc, Document} from 'mongoose';
 import {Schema, model} from 'mongoose';
 import type {User} from '../user/model';
+import type {Freet} from '../freet/model';
 
 /**
  * This file defines the properties stored in a Circle
@@ -13,6 +14,7 @@ export type Circle = {
   user_self: Types.ObjectId;
   users: Types.ObjectId[];
   name: string;
+  freets: Types.ObjectId[];
 };
 
 export type PopulatedCircle = {
@@ -20,6 +22,7 @@ export type PopulatedCircle = {
   user_self: User;
   users: User[];
   name: string;
+  freets: Freet[];
 };
 
 // Mongoose schema definition for interfacing with a MongoDB table
@@ -43,7 +46,13 @@ const CircleSchema = new Schema<Circle>({
   name: {
     type: String,
     required: true
-  }
+  },
+  // The list of freets in this circle
+  freets: [{
+    type: Schema.Types.ObjectId,
+    required: true,
+    ref: 'Freet'
+  }]
 });
 
 const CircleModel = model<Circle>('Circle', CircleSchema);

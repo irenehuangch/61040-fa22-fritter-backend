@@ -3,6 +3,7 @@ import type {Circle} from './model';
 import CircleModel from './model';
 import UserCollection from '../user/collection';
 import type {User} from '../user/model';
+import FreetCollection from '../freet/collection';
 
 /**
  * This files contains a class that has the functionality to explore freets
@@ -23,7 +24,7 @@ class CircleCollection {
   static async addOneCircle(self_id: Types.ObjectId | string, name: string): Promise<HydratedDocument<Circle>> {
     const users_ids = [self_id];
 
-    const circle = new CircleModel({user_self: self_id, users: users_ids, name});
+    const circle = new CircleModel({user_self: self_id, users: users_ids, name, freets: []});
     await circle.save(); // Saves circle to MongoDB
 
     return circle;

@@ -14,6 +14,7 @@ export type Freet = {
   dateCreated: Date;
   content: string;
   dateModified: Date;
+  circle: string; // Name of circle to freet to
 };
 
 export type PopulatedFreet = {
@@ -22,6 +23,7 @@ export type PopulatedFreet = {
   dateCreated: Date;
   content: string;
   dateModified: Date;
+  circle: string;
 };
 
 // Mongoose schema definition for interfacing with a MongoDB table
@@ -48,6 +50,11 @@ const FreetSchema = new Schema<Freet>({
   // The date the freet was modified
   dateModified: {
     type: Date,
+    required: true
+  },
+  // The name of a circle to send this freet to
+  circle: {
+    type: String,
     required: true
   }
 });

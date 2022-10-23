@@ -2,6 +2,8 @@ import type {HydratedDocument} from 'mongoose';
 import moment from 'moment';
 import type {Circle, PopulatedCircle} from './model';
 import type {User} from '../user/model';
+import type {Freet} from '../freet/model';
+import FreetCollection from '../freet/collection';
 
 // Update this if you add a property to the Freet type!
 type CircleResponse = {
@@ -9,15 +11,8 @@ type CircleResponse = {
   self_username: string;
   circle_usernames: string[];
   circle_name: string;
+  freets: Freet[];
 };
-
-/**
- * Encode a date as an unambiguous string
- *
- * @param {Date} date - A date object
- * @returns {string} - formatted date as string
- */
-const formatDate = (date: Date): string => moment(date).format('MMMM Do YYYY, h:mm:ss a');
 
 /**
  * Transform a raw Freet object from the database into an object
@@ -41,11 +36,14 @@ const constructCircleResponse = async (circle: HydratedDocument<Circle>): Promis
     path: 'users'
   }).then(m => m.users.map(s => s.username));
 
+  const freets = await FreetCollection.findAllByCircle(circle.user_self, circleCopy.name);
+
   return {
     _id: circleCopy._id.toString(),
     self_username,
     circle_usernames,
-    circle_name: circleCopy.name
+    circle_name: circleCopy.name,
+    freets
   };
 };
 

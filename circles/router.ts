@@ -65,9 +65,7 @@ router.get(
     userValidator.isUserLoggedIn
   ],
   async (req: Request, res: Response, next: NextFunction) => {
-    console.log(req.query.name);
     if (req.query.name !== undefined) {
-      console.log('circle_name not undefined');
       next();
       return;
     }

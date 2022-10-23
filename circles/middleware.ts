@@ -9,7 +9,7 @@ import CircleCollection from './collection';
  * Checks if a user is in a circle
  */
 const isUserInCircle = async (req: Request, res: Response, next: NextFunction) => {
-  const circle = await CircleCollection.findOneByCircleName(req.session.userId, req.params.circle_name);
+  const circle = await CircleCollection.findOneByCircleName(req.session.userId, req.params.circle_name ? req.params.circle_name : req.body.circle_name);
   if (!circle) {
     res.status(404).json({
       error: {
