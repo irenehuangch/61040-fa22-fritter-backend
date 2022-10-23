@@ -192,23 +192,12 @@ This renders the `index.html` file that will be used to interact with the backen
 - `400` if `author` is not given
 - `404` if `author` is not a recognized username of any user
 
-#### `GET /api/freets?circle=NAME` (Added) - Get freets by circle
-
-**Returns**
-
-- An array of freets for the circle with name `circle`
-
-**Throws**
-
-- `403` if the user is not logged in
-- `400` if `circle` is not given
-- `404` if `circle` is not a recognized circle of the logged in user
-
 #### `POST /api/freets` - Create a new freet
 
 **Body**
 
 - `content` _{string}_ - The content of the freet
+- `circle_name` _{string}_ - The name of the circle to post the freet in
 
 **Returns**
 
@@ -238,6 +227,7 @@ This renders the `index.html` file that will be used to interact with the backen
 **Body**
 
 - `content` _{string}_ - The new content of the freet
+- `circle_name` _{string}_ - The name of the circle to post the freet in
 
 **Returns**
 
@@ -285,6 +275,7 @@ This renders the `index.html` file that will be used to interact with the backen
 **Body**
 
 - `username` _{string}_ - The user's username
+- `name` _{string}_ - The user's name
 - `password` _{string}_ - The user's password
 
 **Returns**
@@ -295,14 +286,15 @@ This renders the `index.html` file that will be used to interact with the backen
 **Throws**
 
 - `403` if there is a user already logged in
-- `400` if username or password is in the wrong format
+- `400` if username, name, or password is in the wrong format
 - `409` if username is already in use
 
-#### `PUT /api/users` - Update a user's profile
+#### `PUT /api/users` - Update a user's account details
 
 **Body** _(no need to add fields that are not being changed)_
 
 - `username` _{string}_ - The user's username
+- `name` _{string}_ - The user's name
 - `password` _{string}_ - The user's password
 
 **Returns**
@@ -313,7 +305,7 @@ This renders the `index.html` file that will be used to interact with the backen
 **Throws**
 
 - `403` if the user is not logged in
-- `400` if username or password is in the wrong format
+- `400` if username, name, or password is in the wrong format
 - `409` if the username is already in use
 
 #### `DELETE /api/users` - Delete user
@@ -337,7 +329,7 @@ This renders the `index.html` file that will be used to interact with the backen
 
 - `403` if the user is not logged in
 
-#### `GET /api/followers/:username?` (Added) - Get any user's list of following and followed users
+#### `GET /api/followers?username=username` (Added) - Get any user's list of following and followed users
 
 **Returns**
 
@@ -346,6 +338,7 @@ This renders the `index.html` file that will be used to interact with the backen
 
 **Throws**
 
+- `403` if the user is not logged in
 - `400` if no username is provided
 - `404` if no account exists with the specified username
 
@@ -387,52 +380,87 @@ This renders the `index.html` file that will be used to interact with the backen
 - `405` if the username of the user to follow is the same as the user's own username (cannot unfollow oneself)
 - `409` if the user to be followed is already not followed
 
-#### `POST /api/studio` (Added) - Create a studio component for a freet
+#### `GET /api/studio?username=username` (Added) - Get all the studio components of freets for a specified username
+
+**Returns**
+
+- A success message
+- An object containing an array of freet studio components
+
+**Throws**
+
+- `403` if the user is not logged in
+- `400` if username is not given
+- `404` if no account exists under this username
+
+#### `GET /api/studio?freetId=freetId` (Added) - Get the studio component of a specified freet
+
+**Returns**
+
+- A success message
+- An object with the studio freet information
+
+**Throws**
+
+- `403` if the user is not logged in
+- `400` if freetId is not given
+- `404` if no freet with freetId exists or if no studio component exists
+
+#### `POST /api/studio?freetId=freetId` (Added) - Create a studio component for a freet
 
 **Body**
 
-- `content` _{string}_ - The content of the studio created freet
+- `font` _{string}_ - The selected custom font
+- `color` _{string}_ - The selected custom color
 
 **Returns**
 
 - A success message
-- A object with the created freet
+- A object with the created studio component
 
 **Throws**
 
 - `403` if the user is not logged in
-- `400` If the freet content is empty or a stream of empty spaces
+- `400` if freetId is empty
+- `404` if no freet with id freetId exists
+- `409` if the freet already has a studio component
+- `403` if the user is not the author of specified freet
+- `400` if the studio details are empty
 
-#### `PUT /api/studio/:studioId?`(Added) - Update existing studio component for an existing freet
+#### `PUT /api/studio?freetId=freetId`(Added) - Update existing studio component for an existing freet
 
 **Body**
 
-- `content` _{string}_ - The content of the studio component
+- `font` _{string}_ - The selected custom font
+- `color` _{string}_ - The selected custom color
 
 **Returns**
 
 - A success message
-- A object with the updated freet
+- A object with the updated studio freet
 
 **Throws**
 
 - `403` if the user is not logged in
-- `404` if the freetId is invalid
-- `403` if the user is not the author of the freet
-- `400` If the freet content is empty or a stream of empty spaces
+- `400` if freetId is empty
+- `404` if no freet with id freetId exists
+- `409` if the freet does not yet have a studio component
+- `403` if the user is not the author of specified freet
+- `400` if the studio details are empty
 
-#### `DELETE /api/studio/:studioId?`(Added) - Delete studio component from an existing freet
+#### `DELETE /api/studio?freetId=freetId`(Added) - Delete studio component from an existing freet
 
 **Returns**
 
 - A success message
-- A object with the updated freet
 
 **Throws**
 
 - `403` if the user is not logged in
-- `404` if the freetId is invalid
-- `403` if the user is not the author of the freet
+- `400` if freetId is empty
+- `404` if no freet with id freetId exists
+- `409` if the freet does not have a studio component
+- `403` if the user is not the author of the specified freet
 
 #### `GET /api/profile`(Added) - Get the logged in user's profile info
 
@@ -455,41 +483,30 @@ This renders the `index.html` file that will be used to interact with the backen
 **Throws**
 
 - `403` if the user is not logged in
+- `400` if no username given
 - `404` if no account exists with the requested username
 
-#### `PUT /api/profile/bio`(Added) - Update bio for the logged in user
+#### `PUT /api/profile`(Added) - Update profile details for the logged in user
 
 **Body**
 
-- `content` _{string}_ - The content of the user's bio
+- `bio` _{string}_ - The content of the user's bio
+- `freet` _{Types.ObjectId}_ - The additional freetId to add to the user's list of freets
 
 **Returns**
 
 - A success message
-- A object with the updated bio
-
-**Throws**
-
-- `403` if the user is not logged in
-- `400` If the bio content is empty or a stream of empty spaces
-- `413` if the new freet content is more than 60 characters long
-
-#### `GET /api/circle` (Added) - Get a list of all circles for a user
-
-**Returns**
-
-- A success message
-- A object with all the circles for the logged in user
+- A object with the updated profile information
 
 **Throws**
 
 - `403` if the user is not logged in
 
-#### `Post /api/circle` (Added) - Create a new circle
+#### `Post /api/circles` (Added) - Create a new circle
 
 **Body**
 
-- `name` _{string}_ - The name for this circle
+- `circle_name` _{string}_ - The name for this circle
 
 **Returns**
 
@@ -502,7 +519,18 @@ This renders the `index.html` file that will be used to interact with the backen
 - `400` if a circle name is not given
 - `409` if a circle already exists under the given name
 
-#### `GET /api/circle?name=circle_name` (Added) - Get info of an existing circle
+#### `GET /api/circles` (Added) - Get a list of all circles for a user
+
+**Returns**
+
+- A success message
+- A object with all the circles for the logged in user
+
+**Throws**
+
+- `403` if the user is not logged in
+
+#### `GET /api/circles?name=circle_name` (Added) - Get info of an existing circle
 
 **Body**
 
@@ -517,14 +545,13 @@ This renders the `index.html` file that will be used to interact with the backen
 
 - `403` if the user is not logged in
 - `400` if no circle name is given
-- `409` if the user is not in the specified circle
+- `404` if the user is not in the specified circle
 
-#### `PUT /api/circle/:circle_name?` (Added) - Update an existing circle by adding a new user
+#### `PUT /api/circles/:circle_name?` (Added) - Update an existing circle by adding a new user
 
 **Body**
 
-- `circle_name` _{string}_ - The name for this circle
-- `username` _{string}_ - The username for a user to add
+- `username` _{string}_ - The username of a follower to add
 
 **Returns**
 
@@ -539,11 +566,7 @@ This renders the `index.html` file that will be used to interact with the backen
 - `405` if the username to be added is not a follower
 - `409` if the user to be added is already in the circle
 
-#### `DELETE /api/circle/:circle_name?` (Added) - Delete (leave from) an existing circle
-
-**Body**
-
-- `circle_name` _{string}_ - The name of the circle to leave from
+#### `DELETE /api/circles/:circle_name?` (Added) - Delete (leave from) an existing circle
 
 **Returns**
 

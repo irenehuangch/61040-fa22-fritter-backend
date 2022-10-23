@@ -10,13 +10,25 @@ import * as util from './util';
 const router = express.Router();
 
 /**
+ * Get studio freets for a given username
+ *
+ * @name GET /api/studio?username=username
+ *
+ * @return {StudioResponse[]} - An array of studio components created by username
+ * @throws {403} - If user is not logged in
+ * @throws {400} - If username is not given
+ * @throws {404} - If no account exists under this username
+ *
+ */
+/**
  * Get studio component of a freet
  *
  * @name GET /api/studio?freetId=freetId
  *
- * @return {StudioResponse[]} - An array of freets created by user with id, authorId
+ * @return {StudioResponse} - The studio component for the specified freet
+ * @throws {403} - If user is not logged in
  * @throws {400} - If freetId is not given
- * @throws {404} - If no studio component exists for this freet
+ * @throws {404} - If no freet with freetId exists or if no studio component exists
  *
  */
 router.get(
@@ -71,8 +83,11 @@ router.get(
  * @param {string} color - The custom color name
  * @return {StudioResponse} - The created freet
  * @throws {403} - If the user is not logged in
- * @throws {400} - If the studio details are empty
+ * @throws {400} - If freetId is empty
+ * @throws {404} - If no freet with id freetId exists
  * @throws {409} - If the freet already has a studio component
+ * @throws {403} - If the user is not the author of specified freet
+ * @throws {400} - If the studio details are empty
  */
 router.post(
   '/',
@@ -101,10 +116,11 @@ router.post(
  *
  * @param {freetId} - The id of the freet to delete a studio component for
  * @return {string} - A success message
- * @throws {403} - If the user is not logged in or is not the author of
- *                 the freet
- * @throws {404} - If the freetId is not valid
+ * @throws {403} - If the user is not logged in
+ * @throws {400} - If freetId is empty
+ * @throws {404} - If no freet with id freetId exists
  * @throws {409} - If the freet does not have a studio component
+ * @throws {403} - If the user is not the author of the specified freet
  */
 router.delete(
   '/',
@@ -130,10 +146,12 @@ router.delete(
  * @param {string} font - The custom font name
  * @param {string} color - The custom color name
  * @return {StudioResponse} - the updated studio component
- * @throws {403} - if the user is not logged in or not the author of
- *                 of the freet
- * @throws {404} - If the freetId is not valid
- * @throws {400} - If the studioDetails to update are empty
+ * @throws {403} - If the user is not logged in
+ * @throws {400} - If freetId is empty
+ * @throws {404} - If no freet with id freetId exists
+ * @throws {409} - If the freet does not yet have a studio component
+ * @throws {403} - If the user is not the author of specified freet
+ * @throws {400} - If the studio details are empty
  */
 router.put(
   '/',

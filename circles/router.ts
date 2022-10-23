@@ -126,6 +126,7 @@ router.delete(
  *
  * @name PUT /api/circles/:circle_name
  *
+ * @param {username} - The username of a follower to add
  * @return {CircleResponse} - the updated circle
  * @throws {403} - If the user is not logged in
  * @throws {400} - If no circle name or username is given

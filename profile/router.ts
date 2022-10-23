@@ -85,6 +85,7 @@ router.get(
  * @name PUT /api/profile
  *
  * @param {bio} - Updated bio content
+ * @param {freet} - Additional freet id to add
  * @return {ProfileResponse} - The updated profile
  * @throws {403} - If the user is not logged in
  */

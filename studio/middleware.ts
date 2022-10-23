@@ -71,7 +71,7 @@ const isAlreadyCreated = async (req: Request, res: Response, next: NextFunction)
  */
 const isValidStudioContent = async (req: Request, res: Response, next: NextFunction) => {
   if (!(req.body.font || req.body.color)) {
-    res.status(404).json({
+    res.status(400).json({
       error: 'Fields cannot be all empty.'
     });
     return;
