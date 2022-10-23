@@ -5,6 +5,7 @@ import * as userValidator from '../user/middleware';
 import * as freetValidator from '../freet/middleware';
 import * as circleValidator from '../circles/middleware';
 import * as util from './util';
+import StudioCollection from '../studio/collection';
 
 const router = express.Router();
 
@@ -97,6 +98,7 @@ router.delete(
     freetValidator.isValidFreetModifier
   ],
   async (req: Request, res: Response) => {
+    await StudioCollection.deleteOne(req.params.freetId);
     await FreetCollection.deleteOne(req.params.freetId);
     res.status(200).json({
       message: 'Your freet was deleted successfully.'

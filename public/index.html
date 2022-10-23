@@ -10,6 +10,7 @@
   <script src="/scripts/followers.js"></script>
   <script src="/scripts/circles.js"></script>
   <script src="/scripts/profile.js"></script>
+  <script src="/scripts/studio.js"></script>
   <script src="/scripts/index.js"></script>
 </head>
 
@@ -245,6 +246,109 @@
             <input id="bio" name="bio">
           </div>
           <input type="submit" value="Change Bio">
+        </form>
+
+        <form id="view-all-studio">
+          <h3>View All Studio Components</h3>
+          <div>
+            <label for="username">Username:</label>
+            <input id="username" name="username">
+          </div>
+          <input type="submit" value="View Studio By Username">
+        </form>
+
+        <form id="view-studio">
+          <h3>View Studio Component for a Freet</h3>
+          <div>
+            <label for="freetId">Freet ID:</label>
+            <input id="freetId" name="freetId">
+          </div>
+          <input type="submit" value="View Freet Studio">
+        </form>
+
+        <form id="create-studio">
+          <h3>Create Studio Component for a Freet</h3>
+          <div>
+            <label for="freetId">Freet ID:</label>
+            <input id="freetId" name="freetId">
+          </div>
+          <div>
+            <label for="font">Select Font:</label>
+            <select id="font" name="font">
+              <option value=""></option>
+              <option value="Arial">Arial</option>
+              <option value="Helvetica">Helvetica</option>
+              <option value="Times New Roman">Times New Roman</option>
+              <option value="Georgia">Georgia</option>
+              <option value="Courier">Courier</option>
+              <option value="Apple Chancery">Apple Chancery</option>
+              <option value="Snell Roundhand">Snell Roundhand</option>
+              <option value="Chalkduster">Chalkduster</option>
+              <option value="Impact">Impact</option>
+            </select>
+          </div>
+          <div>
+            <label for="color">Select Text Color:</label>
+            <select id="color" name="color">
+              <option value=""></option>
+              <option value="black">Black</option>
+              <option value="red">Red</option>
+              <option value="orange">Orange</option>
+              <option value="yellow">Yellow</option>
+              <option value="green">Green</option>
+              <option value="blue">Blue</option>
+              <option value="purple">Purple</option>
+              <option value="pink">Pink</option>
+            </select>
+          </div>
+          <input type="submit" value="Create Freet Studio">
+        </form>
+
+        <form id="edit-studio">
+          <h3>Edit Studio Component for a Freet</h3>
+          <div>
+            <label for="freetId">Freet ID:</label>
+            <input id="freetId" name="freetId">
+          </div>
+          <div>
+            <label for="font">Select Font:</label>
+            <select id="font" name="font">
+              <option value=""></option>
+              <option value="Arial">Arial</option>
+              <option value="Helvetica">Helvetica</option>
+              <option value="Times New Roman">Times New Roman</option>
+              <option value="Georgia">Georgia</option>
+              <option value="Courier">Courier</option>
+              <option value="Apple Chancery">Apple Chancery</option>
+              <option value="Snell Roundhand">Snell Roundhand</option>
+              <option value="Chalkduster">Chalkduster</option>
+              <option value="Impact">Impact</option>
+            </select>
+          </div>
+          <div>
+            <label for="color">Select Text Color:</label>
+            <select id="color" name="color">
+              <option value=""></option>
+              <option value="black">Black</option>
+              <option value="red">Red</option>
+              <option value="orange">Orange</option>
+              <option value="yellow">Yellow</option>
+              <option value="green">Green</option>
+              <option value="blue">Blue</option>
+              <option value="purple">Purple</option>
+              <option value="pink">Pink</option>
+            </select>
+          </div>
+          <input type="submit" value="Edit Freet Studio">
+        </form>
+
+        <form id="delete-studio">
+          <h3>Delete Studio Component for a Freet</h3>
+          <div>
+            <label for="freetId">Freet ID:</label>
+            <input id="freetId" name="freetId">
+          </div>
+          <input type="submit" value="Delete Freet Studio">
         </form>
 
       </div>

@@ -52,24 +52,24 @@ const formsAndHandlers = {
   'add-circle-user': addCircleUser,
   'view-your-profile': viewYourProfile,
   'view-user-profile': viewUserProfile,
-  'change-bio': editBio
+  'change-bio': editBio,
+  'view-all-studio': viewAllStudio,
+  'view-studio': viewStudio,
+  'create-studio': createStudio,
+  'edit-studio': editStudio,
+  'delete-studio': deleteStudio
 };
 
 // Attach handlers to forms
 function init() {
   Object.entries(formsAndHandlers).forEach(([formID, handler]) => {
     const form = document.getElementById(formID);
-    if (formID === 'create-circle-users') {
+    form.onsubmit = e => {
+      e.preventDefault();
       const formData = new FormData(form);
-      handler();
-    } else {
-      form.onsubmit = e => {
-        e.preventDefault();
-        const formData = new FormData(form);
-        handler(Object.fromEntries(formData.entries()));
-        return false; // Don't reload page
-      };
-    }
+      handler(Object.fromEntries(formData.entries()));
+      return false; // Don't reload page
+    };
   });
 }
 

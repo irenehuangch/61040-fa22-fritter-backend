@@ -9,6 +9,7 @@ import * as profileUtil from '../profile/util';
 import FollowersCollection from '../followers/collection';
 import ProfileCollection from '../profile/collection';
 import CircleCollection from '../circles/collection';
+import StudioCollection from '../studio/collection';
 
 const router = express.Router();
 
@@ -193,6 +194,7 @@ router.delete(
   ],
   async (req: Request, res: Response) => {
     const userId = (req.session.userId as string) ?? ''; // Will not be an empty string since its validated in isUserLoggedIn
+    await StudioCollection.deleteAll(userId);
     await UserCollection.deleteOne(userId);
     await FreetCollection.deleteMany(userId);
     await FollowersCollection.deleteOne(req.session.userId);
