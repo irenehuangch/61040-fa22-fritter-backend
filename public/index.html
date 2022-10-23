@@ -9,6 +9,7 @@
   <script src="/scripts/user.js"></script>
   <script src="/scripts/followers.js"></script>
   <script src="/scripts/circles.js"></script>
+  <script src="/scripts/profile.js"></script>
   <script src="/scripts/index.js"></script>
 </head>
 
@@ -86,6 +87,11 @@
         <form id="sign-out">
           <h3>Sign Out</h3>
           <input type="submit" value="Sign out">
+        </form>
+
+        <form id="view-all-users">
+          <h3>View All Users</h3>
+          <input type="submit" value="View All Users">
         </form>
 
         <form id="view-all-freets">
@@ -208,6 +214,29 @@
             <input id="circle_name" name="circle_name">
           </div>
           <input type="submit" value="Leave Circle">
+        </form>
+
+        <form id="view-your-profile">
+          <h3>View Profile</h3>
+          <input type="submit" value="View Profile">
+        </form>
+
+        <form id="view-user-profile">
+          <h3>View a User Profile</h3>
+          <div>
+            <label for="username">Username:</label>
+            <input id="username" name="username">
+          </div>
+          <input type="submit" value="View a User Profile">
+        </form>
+
+        <form id="change-bio">
+          <h3>Change Bio</h3>
+          <div>
+            <label for="bio">New Bio:</label>
+            <input id="bio" name="bio">
+          </div>
+          <input type="submit" value="Change Bio">
         </form>
 
       </div>

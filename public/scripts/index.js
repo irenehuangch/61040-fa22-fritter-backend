@@ -35,6 +35,7 @@ const formsAndHandlers = {
   'change-password': changePassword,
   'sign-in': signIn,
   'sign-out': signOut,
+  'view-all-users': viewAllUsers,
   'view-all-freets': viewAllFreets,
   'view-freets-by-author': viewFreetsByAuthor,
   'create-freet': createFreet,
@@ -48,7 +49,10 @@ const formsAndHandlers = {
   'view-circle': viewCircle,
   'create-circle': createCircle,
   'delete-circle': deleteCircle,
-  'add-circle-user': addCircleUser
+  'add-circle-user': addCircleUser,
+  'view-your-profile': viewYourProfile,
+  'view-user-profile': viewUserProfile,
+  'change-bio': editBio
 };
 
 // Attach handlers to forms

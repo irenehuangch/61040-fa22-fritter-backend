@@ -2,6 +2,7 @@ import type {HydratedDocument, Types} from 'mongoose';
 import type {Freet} from './model';
 import FreetModel from './model';
 import UserCollection from '../user/collection';
+import ProfileCollection from '../profile/collection';
 
 /**
  * This files contains a class that has the functionality to explore freets
@@ -28,6 +29,7 @@ class FreetCollection {
       dateModified: date
     });
     await freet.save(); // Saves freet to MongoDB
+    await ProfileCollection.updateOne(authorId, {freet: freet._id});
     return freet.populate('authorId');
   }
 

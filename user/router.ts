@@ -5,7 +5,10 @@ import UserCollection from './collection';
 import * as userValidator from './middleware';
 import * as util from './util';
 import * as followersUtil from '../followers/util';
+import * as profileUtil from '../profile/util';
 import FollowersCollection from '../followers/collection';
+import ProfileCollection from '../profile/collection';
+import CircleCollection from '../circles/collection';
 
 const router = express.Router();
 
@@ -66,6 +69,31 @@ router.delete(
 );
 
 /**
+ * Find all users in the database
+ *
+ * @name GET /api/users
+ *
+ * @param {string} name - user's name
+ * @return {User[]} - The created user
+ * @throws {403} - If there is a user already logged in
+ *
+ */
+router.get(
+  '/',
+  [
+    userValidator.isUserLoggedIn
+  ],
+  async (req: Request, res: Response) => {
+    const all_users = await UserCollection.findAll();
+
+    res.status(201).json({
+      message: 'Successfully retrieved all users.',
+      users: all_users.map(user => util.constructUserResponse(user))
+    });
+  }
+);
+
+/**
  * Create a user account.
  *
  * @name POST /api/users
@@ -90,19 +118,36 @@ router.post(
   ],
   async (req: Request, res: Response) => {
     const user = await UserCollection.addOne(req.body.username, req.body.name, req.body.password);
-    console.log('userCollection addOne');
-    const followers = await FollowersCollection.addOne(user);
+
+    const followers = await FollowersCollection.addOne(user); // Initialize a followers object for this user
+    const followers_response = await followersUtil.constructFollowersResponse(followers);
+
+    const profile = await ProfileCollection.addOneByUsername(req.body.username as string);
+    const profile_response = await profileUtil.constructProfileResponse(profile);
+
+    const update = await CircleCollection.updateMany(user._id);
+    if (!update) {
+      res.status(404).json({error: 'Error adding user to all public circles'});
+      return;
+    }
+
+    const circle = await CircleCollection.addOneCircle(user._id, 'public');
+    const all_users = await UserCollection.findAll();
+    circle.users = all_users.map(user => user._id);
+    await circle.save();
+
     req.session.userId = user._id.toString();
     res.status(201).json({
       message: `Your account was created successfully. You have been logged in as ${user.username}`,
       user: util.constructUserResponse(user),
-      followers: followersUtil.constructFollowersResponse(followers)
+      followers: followers_response,
+      profile: profile_response
     });
   }
 );
 
 /**
- * Update a user's profile.
+ * Update a user's account settings.
  *
  * @name PUT /api/users
  *
@@ -127,7 +172,7 @@ router.put(
     const userId = (req.session.userId as string) ?? ''; // Will not be an empty string since its validated in isUserLoggedIn
     const user = await UserCollection.updateOne(userId, req.body);
     res.status(200).json({
-      message: 'Your profile was updated successfully.',
+      message: 'Your account was updated successfully.',
       user: util.constructUserResponse(user)
     });
   }
@@ -151,6 +196,8 @@ router.delete(
     await UserCollection.deleteOne(userId);
     await FreetCollection.deleteMany(userId);
     await FollowersCollection.deleteOne(req.session.userId);
+    await ProfileCollection.deleteOneProfile(userId);
+    await CircleCollection.deleteMany(userId);
     req.session.userId = undefined;
     res.status(200).json({
       message: 'Your account has been deleted successfully.'

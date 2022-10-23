@@ -97,6 +97,16 @@ class UserCollection {
     const user = await UserModel.deleteOne({_id: userId});
     return user !== null;
   }
+
+  /**
+   * Get all the users in the database
+   *
+   * @return {Promise<HydratedDocument<User>[]>} - An array of all of the users
+   */
+  static async findAll(): Promise<Array<HydratedDocument<User>>> {
+    // Retrieves users and sorts them from most to least recently joined
+    return UserModel.find({}).sort({dateJoined: -1});
+  }
 }
 
 export default UserCollection;

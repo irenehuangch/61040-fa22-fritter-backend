@@ -2,7 +2,7 @@ import type {HydratedDocument, Types} from 'mongoose';
 import type {Circle} from './model';
 import CircleModel from './model';
 import UserCollection from '../user/collection';
-import type {User} from 'user/model';
+import type {User} from '../user/model';
 
 /**
  * This files contains a class that has the functionality to explore freets
@@ -102,14 +102,26 @@ class CircleCollection {
     const new_circle = new CircleModel({user_self: user_to_add._id, users: new_userIds, name: circle_name});
     await new_circle.save();
 
-    // // Update circle for each of the other users
-    // circle.users.forEach(async id => {
-    //   const user_circle = await CircleModel.findOne({user_self: id, name: circle_name});
-    //   user_circle.users.push(user_to_add._id);
-    //   await user_circle.save();
-    // });
-
     return circle;
+  }
+
+  /**
+   * Add a user to all user's public circles
+   *
+   * @param {Types.ObjectId | string} userId - The id of the user in session
+   * @return {Promise<Boolean>} - true if the freet has been deleted, false otherwise
+   */
+  static async updateMany(userId: Types.ObjectId | string): Promise<boolean> {
+    const updated = await CircleModel.updateMany(
+      {name: 'public'},
+      {
+        $push: {
+          users: [userId]
+        }
+      }
+    );
+
+    return updated !== null;
   }
 
   /**
@@ -133,6 +145,29 @@ class CircleCollection {
     // Delete this circle from the logged in user's circles
     const circle_deleted = await CircleModel.deleteOne({user_self: userId, name: circle_name});
     return circle_deleted !== null;
+  }
+
+  /**
+   * Delete (leave) a circle
+   *
+   * @param {Types.ObjectId | string} userId - The id of the user in session
+   * @param {string} circle_name - The name of the circle to leave
+   * @return {Promise<Boolean>} - true if the freet has been deleted, false otherwise
+   */
+  static async deleteMany(userId: Types.ObjectId | string): Promise<boolean> {
+    // Update circle for all the other users in a circle
+    const pulled = await CircleModel.updateMany(
+      {users: [userId]},
+      {
+        $pullAll: {
+          users: [userId]
+        }
+      }
+    );
+
+    // Delete all of this user's circles
+    const circle_deleted = await CircleModel.deleteMany({user_self: userId});
+    return pulled !== null && circle_deleted !== null;
   }
 }
 

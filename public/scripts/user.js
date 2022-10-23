@@ -33,6 +33,12 @@ function deleteUser(fields) {
     .catch(showResponse);
 }
 
+function viewAllUsers() {
+  fetch('/api/users')
+    .then(showResponse)
+    .catch(showResponse);
+}
+
 function signIn(fields) {
   fetch('/api/users/session', {method: 'POST', body: JSON.stringify(fields), headers: {'Content-Type': 'application/json'}})
     .then(showResponse)
