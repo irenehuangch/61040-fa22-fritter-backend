@@ -270,7 +270,7 @@ This renders the `index.html` file that will be used to interact with the backen
 
 - `403` if user is not logged in
 
-#### `POST /api/users` - Create an new user account
+#### `POST /api/users` - Create a new user account
 
 **Body**
 
@@ -329,7 +329,7 @@ This renders the `index.html` file that will be used to interact with the backen
 
 - `403` if the user is not logged in
 
-#### `GET /api/followers?username=username` (Added) - Get any user's list of following and followed users
+#### `GET /api/followers?username=USERNAME` (Added) - Get any user's list of following and followed users
 
 **Returns**
 
@@ -380,7 +380,7 @@ This renders the `index.html` file that will be used to interact with the backen
 - `405` if the username of the user to follow is the same as the user's own username (cannot unfollow oneself)
 - `409` if the user to be followed is already not followed
 
-#### `GET /api/studio?username=username` (Added) - Get all the studio components of freets for a specified username
+#### `GET /api/studio?username=USERNAME` (Added) - Get all the studio components of freets for a specified username
 
 **Returns**
 
@@ -393,7 +393,7 @@ This renders the `index.html` file that will be used to interact with the backen
 - `400` if username is not given
 - `404` if no account exists under this username
 
-#### `GET /api/studio?freetId=freetId` (Added) - Get the studio component of a specified freet
+#### `GET /api/studio?freetId=FREETID` (Added) - Get the studio component of a specified freet
 
 **Returns**
 
@@ -406,7 +406,7 @@ This renders the `index.html` file that will be used to interact with the backen
 - `400` if freetId is not given
 - `404` if no freet with freetId exists or if no studio component exists
 
-#### `POST /api/studio?freetId=freetId` (Added) - Create a studio component for a freet
+#### `POST /api/studio?freetId=FREETID` (Added) - Create a studio component for a freet
 
 **Body**
 
@@ -427,7 +427,7 @@ This renders the `index.html` file that will be used to interact with the backen
 - `403` if the user is not the author of specified freet
 - `400` if the studio details are empty
 
-#### `PUT /api/studio?freetId=freetId`(Added) - Update existing studio component for an existing freet
+#### `PUT /api/studio?freetId=FREETID`(Added) - Update existing studio component for an existing freet
 
 **Body**
 
@@ -448,7 +448,7 @@ This renders the `index.html` file that will be used to interact with the backen
 - `403` if the user is not the author of specified freet
 - `400` if the studio details are empty
 
-#### `DELETE /api/studio?freetId=freetId`(Added) - Delete studio component from an existing freet
+#### `DELETE /api/studio?freetId=FREETID`(Added) - Delete studio component from an existing freet
 
 **Returns**
 
@@ -530,11 +530,7 @@ This renders the `index.html` file that will be used to interact with the backen
 
 - `403` if the user is not logged in
 
-#### `GET /api/circles?name=circle_name` (Added) - Get info of an existing circle
-
-**Body**
-
-- `circle_name` _{string}_ - The name for this circle
+#### `GET /api/circles?name=CIRCLE_NAME` (Added) - Get info of an existing circle
 
 **Returns**
 
